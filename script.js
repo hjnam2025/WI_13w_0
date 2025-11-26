@@ -77,12 +77,10 @@ function updatePortMarkers() {
     });
 }
 
-// ▼▼▼ 수정됨: 좌표 변환 함수 (버그 수정) ▼▼▼
 function dmsToDecimal(dmsString) {
     if (!dmsString || typeof dmsString !== 'string') return null;
     const cleaned = dmsString.trim();
     
-    // 1. 도분초(DMS) 형식 확인 (예: 34° 26′ 13.74″N)
     let dmsMatch = cleaned.match(/(\d+)[°]\s*(\d+)[′']\s*([\d.]+)[″"]\s*([NSEW])/);
     if (dmsMatch) {
         let decimal = parseFloat(dmsMatch[1]) + (parseFloat(dmsMatch[2]) / 60) + (parseFloat(dmsMatch[3]) / 3600);
@@ -90,7 +88,6 @@ function dmsToDecimal(dmsString) {
         return decimal;
     }
 
-    // 2. 소수점(Decimal) 형식 확인 (예: 34.1234 N 또는 그냥 34.1234)
     let decimalMatch = cleaned.match(/(-?\d+\.?\d*)\s*([NSEW])?/);
     if (decimalMatch) {
         let decimal = parseFloat(decimalMatch[1]);
@@ -124,9 +121,11 @@ function checkIsTerritorial(island) {
     return requiredNames.includes(name);
 }
 
+// ▼▼▼ 수정됨: "이용가능" 글자가 포함되면 모두 true 반환 (이용가능, 이용가능/개발가능 등) ▼▼▼
 function checkIsUsable(island) {
-    return island.Column21 === '이용가능';
+    return island.Column21 && island.Column21.includes('이용가능');
 }
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
 function createTooltipContent(island) {
     const name = island['무인도서 정보'] || '이름 없음';
@@ -268,7 +267,6 @@ async function loadIslands() {
             const lng = dmsToDecimal(island.Column24);
             const iName = island['무인도서 정보'];
             
-            // 경로 그리기용 좌표 저장
             if (lat && lng) {
                 if (iName === "질마도") {
                     if (island.Column2 === "전남-완도-09-29") {
@@ -290,7 +288,6 @@ async function loadIslands() {
                 });
                 islandMarkers.set(marker, island);
 
-                // 툴팁 생성
                 let tooltipHtml = createTooltipContent(island);
                 
                 let isTargetIsland = true;
@@ -364,7 +361,6 @@ async function loadPorts() {
     }
 }
 
-// ▼▼▼ 점선 스타일 수정 (네 요청 반영) ▼▼▼
 function tryDrawRoutes() {
     if (Object.keys(islandCoords).length === 0 || Object.keys(portCoords).length === 0) return;
 
@@ -374,10 +370,10 @@ function tryDrawRoutes() {
 
         if (iLoc && pLoc) {
             L.polyline([iLoc, pLoc], {
-                color: '#ff4032ff',
-                weight: 4,
-                opacity: 0.95,
-                dashArray: '5, 10',
+                color: '#ff4032ff', 
+                weight: 4,          
+                opacity: 0.95,      
+                dashArray: '5, 10', 
                 className: 'route-line'
             }).addTo(map);
         }
