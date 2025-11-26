@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무인도서 아카이브 - 소개</title>
+    <link rel="stylesheet" href="start-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="bg-image"></div>
+    <div id="bg-overlay"></div>
+
+    <canvas id="canvas"></canvas>
+    <div class="centering-container">
+        
+        <div class="progress-area">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="main-row">
+            
+            <div class="card-window">
+                <section id="intro" class="content-section active">
+                    <div class="split-container">
+                        <div class="card-left">
+                            <h1>무인도서란?</h1>
+                            <div class="bg-location-name"></div>
+                        </div>
+                        <div class="card-right" tabindex="0">
+                            <div class="main-text">
+                                바다로 둘러싸여 있고 만조 시에 해수면 위로 드러나는 자연적으로 형성된 땅으로, 사람이 거주 (정착하여 지속적으로 경제활동을 하는 것)하지 아니하는 곳을 말한다. 
+                                <br><br>
+                                <span class="small-text-in-box">
+                                다만, 등대관리 등 대통령령으로 정하는 사유로 인하여 제한적 지역에 한하여 사람이 거주하는 도시는 무인도서로 본다.
+                                </span>
+                            </div>
+                            <div class="sub-section">
+                                <h3>🌊 주변해역이란?</h3>
+                                <p>무인도서의 만조수위선으로부터 거리가 1킬로미터 이내의 바다.</p>
+                                <p style="font-size: 0.7em; color: #666;">만조수위선 : 밀물 때 해면이 가장 높아진 상태에서 해면과 육지의 경계선.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="value" class="content-section">
+                    <div class="split-container">
+                        <div class="card-left">
+                            <h1>무인도서의<br>가치</h1>
+                            <div class="bg-location-name"></div>
+                        </div>
+                        <div class="card-right" tabindex="0">
+                            <div class="value-item">
+                                <h3>🌿 생태교육의 장</h3>
+                                <p>해양생태계의 보고로서 원시적 해양 생태체험 및 생태교육의 장(場)으로써 무궁무진한 활용가치가 있다.</p>
+                            </div>
+                            <div class="value-item">
+                                <h3>🏄 해양관광레저의 메카</h3>
+                                <p>천혜의 자연환경을 갖춘 무인도서는 해양관광레저의 메카로써 그 미래가치가 무한하다.</p>
+                            </div>
+                            <div class="value-item">
+                                <h3>🇰🇷 해양영토의 시작</h3>
+                                <p><strong>영해기점 무인도서</strong>는 해양영토를 설정하는 지리적 요충지이다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="status" class="content-section">
+                    <div class="split-container">
+                        <div class="card-left">
+                            <h1>현황</h1>
+                            <div class="bg-location-name"></div>
+                        </div>
+                        <div class="card-right" tabindex="0">
+                            <div class="chart-section">
+                                <h2>총 도서 수</h2>
+                                <p class="summary">무인도서 <strong>2,910개</strong> / 유인도서 <strong>480개</strong></p>
+                                <div class="chart-container">
+                                    <canvas id="totalChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-section">
+                                <h2>시도별 현황</h2>
+                                <div class="chart-container">
+                                    <canvas id="sidoChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-section">
+                                <h2>면적 규모별 현황</h2>
+                                <div class="chart-container">
+                                    <canvas id="areaChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-section">
+                                <h2>거리구간별 현황</h2>
+                                <div class="chart-container">
+                                    <canvas id="distanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="management" class="content-section">
+                    <div class="split-container">
+                        <div class="card-left">
+                            <h1>관리</h1>
+                            <div class="bg-location-name"></div>
+                        </div>
+                        <div class="card-right" tabindex="0">
+                            <p class="intro-text">
+                                정부는 4가지 유형으로 지정하여 관리하고 있다.
+                            </p>
+                            <div class="management-grid">
+                                <div class="mgmt-item type-absolute">
+                                    <div class="mgmt-title">🚫 절대보전</div>
+                                    <div class="mgmt-desc">보전 가치가 매우 높은 도서</div>
+                                </div>
+                                <div class="mgmt-item type-semi">
+                                    <div class="mgmt-title">⚠️ 준보전</div>
+                                    <div class="mgmt-desc">일시적 출입 제한 필요</div>
+                                </div>
+                                <div class="mgmt-item type-usable">
+                                    <div class="mgmt-title">🚶 이용가능</div>
+                                    <div class="mgmt-desc">형상 변경 없는 범위 내 이용</div>
+                                </div>
+                                <div class="mgmt-item type-dev">
+                                    <div class="mgmt-title">🏗️ 개발가능</div>
+                                    <div class="mgmt-desc">일정한 개발 허용</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="territorial" class="content-section">
+                    <div class="split-container">
+                        <div class="card-left">
+                            <h1>영해기점</h1>
+                            <div class="bg-location-name"></div>
+                        </div>
+                        <div class="card-right" tabindex="0">
+                            <p>영해기점에 대한 내용이 여기에 표시됩니다.</p>
+                            <div class="image-placeholder">
+                                <p>이미지 자리</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="cta" class="content-section cta-section">
+                    <div class="split-container" style="display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center;">
+                        <h1 style="font-size: 2.5em; font-weight: 500; color: #333; margin-bottom: 20px;">무인도서 지도 보기</h1>
+                        <p style="margin-bottom: 40px;">전국 무인도서의 위치와 상세 정보를 확인해보세요</p>
+                        <a href="index.html" class="cta-button">지도로 이동하기 →</a>
+                    </div>
+                </section>
+
+            </div>
+
+            <nav class="side-nav">
+                <div class="nav-item active" data-index="0">무인도서란</div>
+                <div class="nav-item" data-index="1">무인도서의 가치</div>
+                <div class="nav-item" data-index="2">현황</div>
+                <div class="nav-item" data-index="3">관리</div>
+                <div class="nav-item" data-index="4">영해기점</div>
+                <a href="map.html" class="nav-item map-link">지도</a>
+            </nav>
+
+        </div>
+    </div>
+
+    <script src="start-script.js"></script>
+</body>
+</html>

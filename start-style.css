@@ -1,0 +1,317 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    word-break: keep-all;
+}
+
+body {
+    font-family: "GMarketSans";
+    font-weight: 300;
+    line-height: 1.6;
+    color: #333;
+    background: none;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+}
+
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+
+/* --- Background Layers --- */
+#bg-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 수정됨: 비율 유지하면서 전체 채우기 */
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1; /* 제일 밑 레이어 */
+    transition: background-image 0.5s ease-in-out; 
+}
+
+#bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(165, 211, 238, 0.4) 0%, 
+        rgba(165, 211, 238, 0.4) 60%, 
+        rgba(255, 255, 255, 0.2) 100%   
+    );
+    opacity: 1; 
+    z-index: 2; 
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+    mask: linear-gradient(to top, transparent, black 70%, black); }
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3; /* 파도 애니메이션 */
+    pointer-events: none; 
+}
+
+/* --- Centering Layout --- */
+.centering-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 10; /* 카드와 네비게이션이 맨 앞에 */
+}
+
+/* Progress Bar */
+.progress-area {
+    width: 800px; 
+    height: 10px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #5380e9 0%, #cff4fe 99%);
+    width: 0%;
+    transition: width 0.3s ease-out;
+    border-radius: 3px;
+}
+
+/* Main Row */
+.main-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* Card Window */
+.card-window {
+    width: 800px;
+    height: 60vh; 
+    background-color: transparent;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(127, 165, 255, 0.4);
+    overflow: hidden;
+    position: relative; 
+}
+
+/* 개별 섹션 - Fade 효과 */
+.content-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    background-color: transparent; 
+    z-index: 1;
+}
+
+.content-section.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* ▼▼▼ Split Layout (좌우 분할) ▼▼▼ */
+.split-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(10px);
+}
+
+/* 왼쪽: 제목 영역 (투명도 0.6, 블러 5px) */
+.card-left {
+    width: 28%;
+    background-color: rgba(240, 242, 245, 0.4);
+    backdrop-filter: blur(5px); /* 블러 5px */
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid #e1e1e1;
+    flex-shrink: 0;
+    position: relative; 
+}
+
+.card-left h1 {
+    font-size: 2em;
+    font-weight: 500;
+    color: #2e6dff;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* 왼쪽 하단 섬 이름 스타일 */
+.bg-location-name {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    font-family: "GMarketSans";
+    font-size: 0.85em;
+    color: #888;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 4px 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(2px);
+}
+
+/* 오른쪽: 본문 영역 */
+.card-right {
+    width: 78%;
+    padding: 40px 50px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px); 
+    outline: none; 
+}
+
+/* --- Content Styles --- */
+.main-text {
+    font-size: 0.9em;
+    line-height: 1.55;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+.small-text-in-box {
+    font-size: 0.8em; 
+    color: #666;
+    display: block; 
+    margin-top: 10px;
+}
+
+h3, h2{font-weight: 500;}
+
+p {font-size: 0.85em;}
+
+.intro-text {
+    font-size: 1em;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.sub-section h3 {
+    color: #5380e9;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.value-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: rgba(248, 249, 250, 0.9);
+    border-left: 2px solid #91b1fb;
+    border-radius: 10px;
+}
+.value-item h3 { margin: 0 0 10px 0; font-size: 1.1em; color: #333; }
+
+.chart-section { margin-bottom: 40px; }
+.chart-section h2 { font-size: 1.2em; color: #555; margin-bottom: 15px; }
+.chart-container { position: relative; height: 200px; width: 100%; }
+
+.management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.mgmt-item {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255,0.9)
+
+}
+.mgmt-title { font-weight: bold; margin-bottom: 5px; font-size: 1.1em; }
+.type-absolute .mgmt-title { color: #e74c3c; }
+.type-semi .mgmt-title { color: #f39c12; }
+.type-usable .mgmt-title { color: #27ae60; }
+.type-dev .mgmt-title { color: #3498db; }
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    padding: 15px 50px;
+    background: rgba(46, 109, 255,0.8);
+    color: white;
+    text-decoration: none;
+    font-size: 1.3em;
+    border-radius: 50px;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(83, 128, 233, 0.5);
+}
+.cta-button:hover { background: rgba(174, 208, 255,0.95); transform: scale(1.05);color: #5380e9; font-weight: 500; box-shadow: 0 0 20px rgba(145, 177, 251, 0.5)}
+
+/* Side Nav */
+.side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 150px;
+}
+.nav-item {
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
+}
+.nav-item:hover { background-color: white; transform: translateX(5px); }
+.nav-item.active { background-color: #5380e9; color: white; }
+.map-link { background-color: #333 !important; color: white !important; text-align: center; text-decoration: none; margin-top: 10px; }
+
+@media (max-width: 768px) {
+    .split-container { flex-direction: column; }
+    .card-left { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #eee; padding: 20px; }
+    .card-right { width: 100%; }
+    .main-row { flex-direction: column; }
+    .card-window { width: 100%; height: 80vh; }
+    .side-nav { flex-direction: row; width: 100%; overflow-x: auto; }
+}
